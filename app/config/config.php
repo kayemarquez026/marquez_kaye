@@ -79,7 +79,7 @@ $config['ENVIRONMENT']             = 'development';
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] 				= 'https://github.com/kayemarquez026/marquez_kaye.git';
+$config['base_url'] 				= 'http://localhost/';
 
 /*
 |--------------------------------------------------------------------------
