@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Directory</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="<?=base_url();?>public/style.css">
+  <link rel="stylesheet" href="<?= base_url(); ?>public/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
@@ -34,7 +34,7 @@
 
       <!-- Add New User -->
       <div class="flex justify-end mb-6">
-        <a href="<?=site_url('users/create')?>"
+        <a href="<?= site_url('users/create') ?>"
            class="inline-flex items-center gap-2 bg-white hover:bg-[#C8A2C8] text-black font-semibold px-5 py-2 rounded-xl shadow-lg transition duration-300 hover:text-black border-2 border-black">
           <i class="fa-solid fa-user-plus text-black text-lg"></i> Add New User
         </a>
@@ -53,30 +53,36 @@
             </tr>
           </thead>
           <tbody class="text-gray-900 text-sm">
-            <?php foreach(html_escape($users) as $user): ?>
-              <tr class="transition duration-200">
-                <td class="py-3 px-4 font-medium"><?=($user['id']);?></td>
-                <td class="py-3 px-4"><?=($user['last_name']);?></td>
-                <td class="py-3 px-4"><?=($user['first_name']);?></td>
-                <td class="py-3 px-4">
-                  <span class="bg-[#C8A2C8]/20 text-[#4B0082] text-sm font-semibold px-3 py-1 rounded-full">
-                    <?=($user['email']);?>
-                  </span>
-                </td>
-                <td class="py-3 px-4 flex justify-center gap-3">
-                  <!-- Update Button -->
-                  <a href="<?=site_url('users/update/'.$user['id']);?>"
-                     class="bg-white border-2 border-black hover:bg-[#C8A2C8] hover:text-white text-black font-semibold px-3 py-1 rounded-xl shadow flex items-center gap-1 transition duration-200">
-                    <i class="fa-solid fa-pen-to-square text-black text-lg"></i> Update
-                  </a>
-                  <!-- Delete Button -->
-                  <a href="<?=site_url('users/delete/'.$user['id']);?>"
-                     class="delete-btn bg-white border-2 border-black hover:bg-red-500 hover:text-white text-red-500 px-3 py-1 rounded-xl shadow flex items-center gap-1 transition duration-200">
-                     <i class="fa-solid fa-trash text-red-500 text-lg"></i> Delete
-                  </a>
-                </td>
+            <?php if (!empty($users)): ?>
+              <?php foreach ($users as $user): ?>
+                <tr class="transition duration-200">
+                  <td class="py-3 px-4 font-medium"><?= htmlspecialchars($user['id']); ?></td>
+                  <td class="py-3 px-4"><?= htmlspecialchars($user['last_name']); ?></td>
+                  <td class="py-3 px-4"><?= htmlspecialchars($user['first_name']); ?></td>
+                  <td class="py-3 px-4">
+                    <span class="bg-[#C8A2C8]/20 text-[#4B0082] text-sm font-semibold px-3 py-1 rounded-full">
+                      <?= htmlspecialchars($user['email']); ?>
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 flex justify-center gap-3">
+                    <!-- Update Button -->
+                    <a href="<?= site_url('users/update/'.$user['id']); ?>"
+                       class="bg-white border-2 border-black hover:bg-[#C8A2C8] hover:text-white text-black font-semibold px-3 py-1 rounded-xl shadow flex items-center gap-1 transition duration-200">
+                      <i class="fa-solid fa-pen-to-square text-black text-lg"></i> Update
+                    </a>
+                    <!-- Delete Button -->
+                    <a href="<?= site_url('users/delete/'.$user['id']); ?>"
+                       class="delete-btn bg-white border-2 border-black hover:bg-red-500 hover:text-white text-red-500 px-3 py-1 rounded-xl shadow flex items-center gap-1 transition duration-200">
+                       <i class="fa-solid fa-trash text-red-500 text-lg"></i> Delete
+                    </a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan="5" class="py-4 text-gray-500 italic">No users found</td>
               </tr>
-            <?php endforeach; ?>
+            <?php endif; ?>
           </tbody>
         </table>
       </div>
