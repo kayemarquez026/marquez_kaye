@@ -90,7 +90,7 @@ $config['base_url'] 				= 'https://github.com/kayemarquez026/marquez_kaye.git';
 | variable to blank.
 |
 */
-$config['index_page']               = 'index.php';
+$config['index_page']               = '';
 
 /*
 |--------------------------------------------------------------------------
