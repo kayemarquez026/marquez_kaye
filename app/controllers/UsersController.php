@@ -1,3 +1,5 @@
+
+Vinabells
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
@@ -15,7 +17,7 @@ class UsersController extends Controller {
     public function index()
     {
         $this->call->model('UsersModel');
-        $data['users'] = $this->UsersModel-> All();
+        $data['users'] = $this->UsersModel-> all();
 
         $this->call->view('users/index', $data);
     }
@@ -33,7 +35,7 @@ class UsersController extends Controller {
             ];
 
             if($this->UsersModel->insert($data)){
-                redirect(site_url(''));
+                redirect();
             }else{
                 echo "Error in creating user.";
             }
