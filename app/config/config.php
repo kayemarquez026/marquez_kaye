@@ -79,7 +79,7 @@ $config['ENVIRONMENT']             = 'production';
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] 				= 'https://marquez-kaye.onrender.com';
+$config['base_url'] 				='';
 
 /*
 |--------------------------------------------------------------------------
