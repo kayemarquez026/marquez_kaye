@@ -10,6 +10,7 @@ class UsersController extends Controller {
     public function __construct()
     {
         parent::__construct();
+        $this->call->model('UsersModel'); // Load the model
     }
 
     public function index()
