@@ -30,10 +30,11 @@ class UsersModel extends Model {
         ];
     }
 
-    public function find($id)
+    public function find($id, $with_deleted = false)
     {
         return $this->db->where('id', $id)->get($this->table)->row();
     }
+
 
     public function insert($data)
     {
