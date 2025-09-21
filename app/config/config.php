@@ -90,7 +90,7 @@ $config['base_url'] 				='https://marquez-kaye.onrender.com/';
 | variable to blank.
 |
 */
-$config['index_page']               = 'create.php';
+$config['index_page']               = 'index.php';
 
 /*
 |--------------------------------------------------------------------------
