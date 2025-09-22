@@ -107,11 +107,14 @@ class Database {
     /**
      * Get Database Instance
      *
-     * @param string $dbname
-     * @return instance
+     * @param string|null $dbname
+     * @return Database
      */
-    public static function instance(string $dbname): Database
+    public static function instance(?string $dbname = null): Database
     {
+        if ($dbname === null) {
+            $dbname = 'main'; // default config
+        }
         self::$instance = new Database($dbname);
         return self::$instance;
     }
@@ -121,7 +124,7 @@ class Database {
      *
      * @param int $records_per_page
      * @param int $page
-     * @return pagination
+     * @return Database
      */
     public function pagination(int $records_per_page, int $page): Database
     {
@@ -169,11 +172,6 @@ class Database {
 
         return $this;
     }
-
-    // --------------------------
-    // Everything else remains identical
-    // (insert, update, delete, select, where, join, like, etc.)
-    // --------------------------
 
     /**
      * Reset queries
