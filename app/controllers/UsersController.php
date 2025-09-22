@@ -14,17 +14,18 @@ class UsersController extends Controller {
      */
     public function index()
     {
-        // Get current page and search query safely
-        $page = (int) $this->io->get('page', 1); // default 1
-        $q    = trim($this->io->get('q', ''));   // default empty string
+        // Safely get current page and search query
+        $page = (int) $this->io->get('page', 1); // default page = 1
+        $q    = trim($this->io->get('q', ''));   // default empty search
+
         $records_per_page = 10;
 
-        // Fetch paginated data
+        // Fetch paginated user data
         $user_data = $this->UsersModel->page($q, $records_per_page, $page);
         $data['user'] = $user_data['records'];
         $total_rows   = $user_data['total_rows'];
 
-        // Pagination setup
+        // Configure pagination
         $this->pagination->set_options([
             'first_link'     => '⏮ First',
             'last_link'      => 'Last ⏭',
@@ -36,11 +37,12 @@ class UsersController extends Controller {
         $this->pagination->initialize($total_rows, $records_per_page, $page, 'users?q=' . urlencode($q));
         $data['page'] = $this->pagination->paginate();
 
+        // Load the view
         $this->call->view('users/index', $data);
     }
 
     /**
-     * Create a new user
+     * Show form or create a new user
      */
     public function create()
     {
@@ -52,7 +54,7 @@ class UsersController extends Controller {
             ];
 
             if ($this->UsersModel->insert_user($data)) {
-                redirect(); // success redirect
+                redirect(); // Success redirect
             } else {
                 echo "Error: Failed to create user.";
             }
@@ -62,11 +64,12 @@ class UsersController extends Controller {
     }
 
     /**
-     * Update an existing user
+     * Show form or update an existing user
      */
     public function update($id)
     {
-        $user = $this->UsersModel->find($id, false); // ensure signature matches parent
+        // Fetch user and ensure compatibility with parent find() method
+        $user = $this->UsersModel->find($id, false);
         if (!$user) {
             echo "User not found.";
             return;
@@ -80,7 +83,7 @@ class UsersController extends Controller {
             ];
 
             if ($this->UsersModel->update_user($id, $data)) {
-                redirect(); // success redirect
+                redirect(); // Success redirect
             } else {
                 echo "Error: Failed to update user.";
             }
@@ -96,7 +99,7 @@ class UsersController extends Controller {
     public function delete($id)
     {
         if ($this->UsersModel->delete_user($id)) {
-            redirect(); // success redirect
+            redirect(); // Success redirect
         } else {
             echo "Error: Failed to delete user.";
         }
