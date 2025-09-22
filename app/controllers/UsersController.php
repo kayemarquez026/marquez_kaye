@@ -29,7 +29,7 @@ class UsersController extends Controller {
         $records_per_page = 10;
 
         $user = $this->UsersModel->page($q, $records_per_page, $page);
-        $data['user'] = $user['records'];
+        $data['users'] = $user['records'];
         $total_rows = $user['total_rows'];
 
         $this->pagination->set_options([
@@ -93,7 +93,7 @@ class UsersController extends Controller {
                 echo "Error in updating user.";
             }
         }else{
-            $data['user'] = $user;
+            $data['users'] = $user;
             $this->call->view('users/update', $data);
         }
     }
