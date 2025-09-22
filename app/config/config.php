@@ -64,7 +64,7 @@ $config['VERSION']                 = '4.2.4';
 | -------------------------------------------------------------------
 | Values: development and production
 */
-$config['ENVIRONMENT']             ='production';
+$config['ENVIRONMENT']             ='development';
 
 /*
 |--------------------------------------------------------------------------
@@ -105,7 +105,7 @@ $config['index_page']               = 'index.php';
 |   3 = All
 |
 */
-$config['log_threshold']            = 0;
+$config['log_threshold']            = 2;
 $config['log_dir']                  = 'runtime/logs/';
 
 /*
