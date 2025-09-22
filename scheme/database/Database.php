@@ -108,7 +108,7 @@ class Database {
      * Get Database Instance
      *
      * @param string $dbname
-     * @return Database
+     * @return instance
      */
     public static function instance(string $dbname): Database
     {
@@ -121,7 +121,7 @@ class Database {
      *
      * @param int $records_per_page
      * @param int $page
-     * @return Database
+     * @return pagination
      */
     public function pagination(int $records_per_page, int $page): Database
     {
