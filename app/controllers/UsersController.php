@@ -14,7 +14,7 @@ class UsersController extends Controller {
 
     public function index()
     {
-        $this->call->model('UsersModel');
+       $this->call->model('UsersModel');
 
         $page = 1;
         if(isset($_GET['page']) && ! empty($_GET['page'])) {
@@ -26,11 +26,11 @@ class UsersController extends Controller {
             $q = trim($this->io->get('q'));
         }
 
-        $records_per_page = 10;
+        $records_per_page = 2;
 
-        $user = $this->UsersModel->page($q, $records_per_page, $page);
-        $data['user'] = $user['records'];
-        $total_rows = $user['total_rows'];
+        $users = $this->UsersModel->page($q, $records_per_page, $page);
+        $data['users'] = $users['records'];
+        $total_rows = $users['total_rows'];
 
         $this->pagination->set_options([
             'first_link'     => '⏮ First',
@@ -59,7 +59,7 @@ class UsersController extends Controller {
             ];
 
             if($this->UsersModel->insert($data)){
-                redirect();
+                redirect(site_url(''));
             }else{
                 echo "Error in creating user.";
             }

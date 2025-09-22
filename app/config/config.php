@@ -64,7 +64,7 @@ $config['VERSION']                 = '4.2.4';
 | -------------------------------------------------------------------
 | Values: development and production
 */
-$config['ENVIRONMENT']             ='development';
+$config['ENVIRONMENT']             = 'development';
 
 /*
 |--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ $config['ENVIRONMENT']             ='development';
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] 				='https://marquez-kaye.onrender.com/';
+$config['base_url'] 				= 'http://localhost:3000/';
 
 /*
 |--------------------------------------------------------------------------
@@ -105,7 +105,7 @@ $config['index_page']               = 'index.php';
 |   3 = All
 |
 */
-$config['log_threshold']            = 2;
+$config['log_threshold']            = 0;
 $config['log_dir']                  = 'runtime/logs/';
 
 /*
@@ -212,7 +212,7 @@ $config['language'] 				= 'en-US';
 $config['sess_driver']             = 'file';
 $config['sess_cookie_name']        = 'LLSession';
 $config['sess_expiration']         = 7200;
-$config['sess_save_path']          = 'APP_DIR . runtime/sessions/';
+$config['sess_save_path']          = '';
 $config['sess_match_ip']           = TRUE;
 $config['sess_match_fingerprint']  = TRUE;
 $config['sess_time_to_update']     = 300;
