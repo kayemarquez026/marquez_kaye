@@ -33,10 +33,10 @@ class UsersController extends Controller {
         $total_rows = $users['total_rows'];
 
         $this->pagination->set_options([
-            'first_link'     => '⏮ First',
-            'last_link'      => 'Last ⏭',
-            'next_link'      => 'Next →',
-            'prev_link'      => '← Prev',
+            'first_link'     => '⏮',
+            'last_link'      => '⏭',
+            'next_link'      => '→',
+            'prev_link'      => '←',
             'page_delimiter' => '&page='
         ]);
         $this->pagination->set_theme('bootstrap');
