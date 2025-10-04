@@ -3,7 +3,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 /**
  * Model: UsersModel
- * 
  */
 class UsersModel extends Model {
     protected $table = 'users';
@@ -74,30 +73,37 @@ class UsersModel extends Model {
      * ============================ */
     public function page($q = '', $records_per_page = null, $page = null) 
     {
-        $query = $this->db->table($this->table);
+        // Base query
+        $baseQuery = $this->db->table($this->table);
 
-        // Apply search if may query
+        // Apply search filter kung may $q
         if (!empty($q)) {
-            $query->like('id', '%'.$q.'%')
-                  ->or_like('username', '%'.$q.'%')
-                  ->or_like('email', '%'.$q.'%')
-                  ->or_like('role', '%'.$q.'%');
-        }
-
-        if (is_null($page)) {
-            return [
-                'total_rows' => $query->select_count('*', 'count')->get()['count'],
-                'records'    => $query->get_all()
-            ];
+            $baseQuery->group_start()
+                      ->like('id', $q)
+                      ->or_like('username', $q)
+                      ->or_like('email', $q)
+                      ->or_like('role', $q)
+                      ->group_end();
         }
 
         // Clone query for counting rows
-        $countQuery = clone $query;
-        $data['total_rows'] = $countQuery->select_count('*', 'count')->get()['count'];
+        $countQuery = clone $baseQuery;
+        $total_rows = $countQuery->select_count('*', 'count')->get()['count'];
+
+        // Walang pagination → return lahat ng results
+        if (is_null($records_per_page) || is_null($page)) {
+            return [
+                'total_rows' => $total_rows,
+                'records'    => $baseQuery->get_all()
+            ];
+        }
 
         // Apply pagination
-        $data['records'] = $query->pagination($records_per_page, $page)->get_all();
+        $records = $baseQuery->pagination($records_per_page, $page)->get_all();
 
-        return $data;
+        return [
+            'total_rows' => $total_rows,
+            'records'    => $records
+        ];
     }
 }

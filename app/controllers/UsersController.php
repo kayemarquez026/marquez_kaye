@@ -3,178 +3,159 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 /**
  * Controller: UsersController
- * 
- * Automatically generated via CLI.
  */
+class UsersController extends Controller {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->call->model('UsersModel');
+        $this->call->library('pagination');
+    }
 
-    class UsersController extends Controller {
-        public function __construct()
-        {
-            parent::__construct();
-        }
-        
-        public function index()
-        {
-            $this->call->model('UsersModel');
-
-            // Check kung may naka-login
-            if (!isset($_SESSION['user'])) {
-                redirect('/auth/login');
-                exit;
-            }
-
-            // Kunin info ng naka-login na user
-            $logged_in_user = $_SESSION['user']; 
-            $data['logged_in_user'] = $logged_in_user;
-
-            // ✅ If admin → show all with pagination
-            if ($logged_in_user['role'] === 'admin') {
-                // Current page
-                $page = 1;
-                if(isset($_GET['page']) && ! empty($_GET['page'])) {
-                    $page = $this->io->get('page');
-                }
-
-                $q = '';
-                if(isset($_GET['q']) && ! empty($_GET['q'])) {
-                    $q = trim($this->io->get('q'));
-                }
-
-                $records_per_page = 10;
-
-                // Get paginated users
-                $users = $this->UsersModel->page($q, $records_per_page, $page);
-
-                $data['users'] = $users['records'];
-                $total_rows = $users['total_rows'];
-
-                // Pagination setup
-                $this->pagination->set_options([
-                    'first_link'     => '⏮ First',
-                    'last_link'      => 'Last ⏭',
-                    'next_link'      => 'Next →',
-                    'prev_link'      => '← Prev',
-                    'page_delimiter' => '&page='
-                ]);
-                $this->pagination->set_theme('custom');
-                $this->pagination->initialize($total_rows, $records_per_page, $page, 'users?q='.$q);
-                $data['page'] = $this->pagination->paginate();
-
-            } else {
-                // ✅ If regular user → only own data
-                $user = $this->UsersModel->get_user_by_id($logged_in_user['id']);
-                $data['users'] = [$user]; // wrap in array para same format sa view
-                $data['page'] = ''; // no pagination
-            }
-
-            // Pass to view
-            $this->call->view('users/index', $data);
+    /** ============================
+     * LIST USERS (Admin/User)
+     * ============================ */
+    public function index()
+    {
+        // Check session
+        if (!isset($_SESSION['user'])) {
+            redirect('/auth/login');
+            exit;
         }
 
+        $logged_in_user = $_SESSION['user']; 
+        $data['logged_in_user'] = $logged_in_user;
 
+        // ✅ If admin → show all with search + pagination
+        if ($logged_in_user['role'] === 'admin') {
+            $page = $this->io->get('page') ?? 1;
+            $q    = trim($this->io->get('q') ?? '');
+            $records_per_page = 10;
+
+            $users = $this->UsersModel->page($q, $records_per_page, $page);
+
+            $data['users'] = $users['records'];
+            $total_rows    = $users['total_rows'];
+
+            // Pagination setup
+            $this->pagination->set_options([
+                'first_link'     => '⏮ First',
+                'last_link'      => 'Last ⏭',
+                'next_link'      => 'Next →',
+                'prev_link'      => '← Prev',
+                'page_delimiter' => '&page='
+            ]);
+            $this->pagination->set_theme('custom'); // ✅ Tailwind
+            $this->pagination->initialize($total_rows, $records_per_page, $page, 'users?q='.$q);
+            $data['page'] = $this->pagination->paginate();
+        } else {
+            // ✅ Regular user → show own record only
+            $user = $this->UsersModel->get_user_by_id($logged_in_user['id']);
+            $data['users'] = [$user];
+            $data['page']  = '';
+        }
+
+        $this->call->view('users/index', $data);
+    }
+
+    /** ============================
+     * CREATE USER
+     * ============================ */
     public function create()
     {
-        if($this->io->method() === 'post'){
+        if ($this->io->method() === 'post') {
             $username = $this->io->post('username');
-            $email = $this->io->post('email');  
+            $email    = $this->io->post('email');
 
             $data = [
-                'username' => $username,
-                'email' => $email
+                'username'   => $username,
+                'email'      => $email,
+                'created_at' => date('Y-m-d H:i:s')
             ];
 
-            if($this->UsersModel->insert($data)){
+            if ($this->UsersModel->insert($data)) {
                 redirect('/users');
             } else {
                 echo 'Failed to create user.';
             }
-        }else{
-           $this->call->view('users/create');
+        } else {
+            $this->call->view('users/create');
         }
-        
     }
 
-public function update($id)
-{
-    $this->call->model('UsersModel');
+    /** ============================
+     * UPDATE USER
+     * ============================ */
+    public function update($id)
+    {
+        $logged_in_user = $_SESSION['user'] ?? null;
 
-    // Get logged-in user from session
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+        $user = $this->UsersModel->get_user_by_id($id);
+        if (!$user) {
+            echo "User not found.";
+            return;
+        }
 
-    $logged_in_user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
+        if ($this->io->method() === 'post') {
+            $username = $this->io->post('username');
+            $email    = $this->io->post('email');
 
-    // Fetch the user to be edited
-    $user = $this->UsersModel->get_user_by_id($id);
-    if (!$user) {
-        echo "User not found.";
-        return;
-    }
+            if ($logged_in_user && $logged_in_user['role'] === 'admin') {
+                $role     = $this->io->post('role');
+                $password = $this->io->post('password');
+                $data = [
+                    'username' => $username,
+                    'email'    => $email,
+                    'role'     => $role
+                ];
+                if (!empty($password)) {
+                    $data['password'] = password_hash($password, PASSWORD_BCRYPT);
+                }
+            } else {
+                $data = [
+                    'username' => $username,
+                    'email'    => $email
+                ];
+            }
 
-    if ($this->io->method() === 'post') {
-        $username = $this->io->post('username');
-        $email = $this->io->post('email');
-
-        // Only allow admin to update role and password
-        if (!empty($logged_in_user) && $logged_in_user['role'] === 'admin') {
-            $role = $this->io->post('role');
-            $password = $this->io->post('password');
-            $data = [
-                'username' => $username,
-                'email' => $email,
-                'role' => $role,
-            ];
-
-            if (!empty($password)) {
-                $data['password'] = password_hash($password, PASSWORD_BCRYPT);
+            if ($this->UsersModel->update($id, $data)) {
+                redirect('/users');
+            } else {
+                echo 'Failed to update user.';
             }
         } else {
-            // Normal users can only update username and email
-            $data = [
-                'username' => $username,
-                'email' => $email
-            ];
+            $data['user'] = $user;
+            $data['logged_in_user'] = $logged_in_user;
+            $this->call->view('users/update', $data);
         }
-
-        if ($this->UsersModel->update($id, $data)) {
-            redirect('/users');
-        } else {
-            echo 'Failed to update user.';
-        }
-    } else {
-        // Pass both the user being edited and the logged-in user to the view
-        $data['user'] = $user;
-        $data['logged_in_user'] = $logged_in_user;
-        $this->call->view('users/update', $data);
     }
-}
 
-
+    /** ============================
+     * DELETE USER
+     * ============================ */
     public function delete($id)
     {
-        $this->call->model('UsersModel');
-        if($this->UsersModel->delete($id)){
+        if ($this->UsersModel->delete($id)) {
             redirect('/users');
         } else {
             echo 'Failed to delete user.';
         }
     }
 
+    /** ============================
+     * REGISTER USER
+     * ============================ */
     public function register()
     {
-        $this->call->model('UsersModel'); // load model
-
         if ($this->io->method() == 'post') {
             $username = $this->io->post('username');
             $password = password_hash($this->io->post('password'), PASSWORD_BCRYPT);
-            $role = 'user'; // default role
 
             $data = [
-                'username' => $username,
-                'email'    => $this->io->post('email'),
-                'password' => $password,
-                'role'     => $role,
+                'username'   => $username,
+                'email'      => $this->io->post('email'),
+                'password'   => $password,
+                'role'       => 'user', // default role
                 'created_at' => date('Y-m-d H:i:s')
             ];
 
@@ -183,73 +164,60 @@ public function update($id)
             }
         }
 
-        $this->call->view('/auth/register');
+        $this->call->view('auth/register');
     }
 
+    /** ============================
+     * LOGIN USER
+     * ============================ */
+    public function login()
+    {
+        $this->call->library('auth');
+        $error = null;
 
-        public function login()
-        {
-            $this->call->library('auth');
+        if ($this->io->method() == 'post') {
+            $username = $this->io->post('username');
+            $password = $this->io->post('password');
 
-            $error = null; // prepare error variable
+            $user = $this->UsersModel->get_user_by_username($username);
 
-            if ($this->io->method() == 'post') {
-                $username = $this->io->post('username');
-                $password = $this->io->post('password');
+            if ($user) {
+                if ($this->auth->login($username, $password)) {
+                    $_SESSION['user'] = [
+                        'id'       => $user['id'],
+                        'username' => $user['username'],
+                        'role'     => $user['role']
+                    ];
 
-                $this->call->model('UsersModel');
-                $user = $this->UsersModel->get_user_by_username($username);
-
-                if ($user) {
-                    if ($this->auth->login($username, $password)) {
-                        // Set session
-                        $_SESSION['user'] = [
-                            'id'       => $user['id'],
-                            'username' => $user['username'],
-                            'role'     => $user['role']
-                        ];
-
-                        if ($user['role'] == 'admin') {
-                            redirect('/users');
-                        } else {
-                            redirect('/users');
-                        }
+                    // ✅ Redirect per role
+                    if ($user['role'] == 'admin') {
+                        redirect('/users');
                     } else {
-                        $error = "Incorrect password!";
+                        redirect('/users');
                     }
                 } else {
-                    $error = "Username not found!";
+                    $error = "Incorrect password!";
                 }
+            } else {
+                $error = "Username not found!";
             }
-
-            // Pass error to view
-            $this->call->view('auth/login', ['error' => $error]);
         }
 
+        $this->call->view('auth/login', ['error' => $error]);
+    }
 
-
+    /** ============================
+     * DASHBOARD (Admin)
+     * ============================ */
     public function dashboard()
     {
-        $this->call->model('UsersModel');
-        $data['user'] = $this->UsersModel->get_all_users(); // fetch all users
-
-        $this->call->model('UsersModel');
-
-        $page = 1;
-        if(isset($_GET['page']) && ! empty($_GET['page'])) {
-            $page = $this->io->get('page');
-        }
-
-        $q = '';
-        if(isset($_GET['q']) && ! empty($_GET['q'])) {
-            $q = trim($this->io->get('q'));
-        }
-
+        $page = $this->io->get('page') ?? 1;
+        $q    = trim($this->io->get('q') ?? '');
         $records_per_page = 10;
 
-        $user = $this->UsersModel->page($q, $records_per_page, $page);
-        $data['user'] = $user['records'];
-        $total_rows = $user['total_rows'];
+        $users = $this->UsersModel->page($q, $records_per_page, $page);
+        $data['user'] = $users['records'];
+        $total_rows   = $users['total_rows'];
 
         $this->pagination->set_options([
             'first_link'     => '⏮ First',
@@ -258,19 +226,20 @@ public function update($id)
             'prev_link'      => '← Prev',
             'page_delimiter' => '&page='
         ]);
-        $this->pagination->set_theme('bootstrap');
-        $this->pagination->initialize($total_rows, $records_per_page, $page, 'users?q='.$q);
+        $this->pagination->set_theme('custom'); // ✅ Tailwind
+        $this->pagination->initialize($total_rows, $records_per_page, $page, 'users/dashboard?q='.$q);
         $data['page'] = $this->pagination->paginate();
 
         $this->call->view('users/dashboard', $data);
     }
 
-
+    /** ============================
+     * LOGOUT
+     * ============================ */
     public function logout()
     {
         $this->call->library('auth');
         $this->auth->logout();
-        redirect('auth/login');
+        redirect('/auth/login');
     }
-
 }
