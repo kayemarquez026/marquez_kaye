@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -13,9 +13,11 @@
       background: linear-gradient(to bottom right, #f8f6fb, #e6e6fa);
       min-height: 100vh;
     }
+
     .delete-btn:hover i {
       color: white !important;
     }
+
     /* Pagination */
     .pagination {
       display: flex;
@@ -61,6 +63,7 @@
         <i class="fa-solid fa-users text-black text-lg"></i> User Directory
       </h1>
       <div class="text-sm font-semibold text-gray-700">
+        <!-- You can add user status here if needed -->
       </div>
     </div>
   </nav>
@@ -68,6 +71,20 @@
   <!-- Main Content -->
   <div class="max-w-6xl mx-auto mt-10 px-4">
     <div class="bg-white p-8 rounded-2xl shadow-2xl border-2 border-black">
+
+      <!-- Logged-in User -->
+      <?php if(!empty($logged_in_user)): ?>
+        <div class="mb-4 text-sm text-gray-700 font-semibold">
+          Welcome: <span class="text-black"><?= html_escape($logged_in_user['username']); ?></span>
+          <?php if($logged_in_user['role'] === 'admin'): ?>
+            (Admin)
+          <?php else: ?>
+            (User)
+          <?php endif; ?>
+        </div>
+      <?php else: ?>
+        <div class="mb-4 text-red-600 font-semibold">Logged in user not found</div>
+      <?php endif; ?>
 
       <!-- Search & Add -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
@@ -77,11 +94,13 @@
           <input type="text" name="q" value="<?=html_escape($_GET['q'] ?? '')?>" placeholder="Search users..." class="outline-none w-full font-mono">
         </form>
 
-        <!-- Add New -->
+        <!-- Add New User (Admin Only) -->
+        <?php if ($logged_in_user['role'] === 'admin'): ?>
         <a href="<?=site_url('users/create')?>"
            class="inline-flex items-center gap-2 bg-white hover:bg-[#C8A2C8] text-black font-semibold px-5 py-2 rounded-xl shadow transition duration-300 border-2 border-black">
           <i class="fa-solid fa-user-plus text-black text-lg"></i> Add New User
         </a>
+        <?php endif; ?>
       </div>
 
       <!-- Table -->
@@ -92,6 +111,10 @@
               <th class="py-3 px-4"><i class="fa-solid fa-hashtag"></i> ID</th>
               <th class="py-3 px-4"><i class="fa-solid fa-user"></i> Username</th>
               <th class="py-3 px-4"><i class="fa-solid fa-envelope"></i> Email</th>
+              <?php if ($logged_in_user['role'] === 'admin'): ?>
+                <th class="py-3 px-4">Password</th>
+                <th class="py-3 px-4">Role</th>
+              <?php endif; ?>
               <th class="py-3 px-4"><i class="fa-solid fa-gear"></i> Actions</th>
             </tr>
           </thead>
@@ -105,13 +128,15 @@
                     <?=($user['email']);?>
                   </span>
                 </td>
+                <?php if ($logged_in_user['role'] === 'admin'): ?>
+                  <td>*******</td>
+                  <td><?= html_escape($user['role']); ?></td>
+                <?php endif; ?>
                 <td class="py-3 px-4 flex justify-center gap-3">
-                  <!-- Update -->
                   <a href="<?=site_url('users/update/'.$user['id']);?>"
                      class="bg-white border-2 border-black hover:bg-[#C8A2C8] hover:text-white text-black font-semibold px-3 py-1 rounded-lg shadow flex items-center gap-1 transition">
                     <i class="fa-solid fa-pen-to-square"></i> Edit
                   </a>
-                  <!-- Delete -->
                   <a href="<?=site_url('users/delete/'.$user['id']);?>"
                      onclick="return confirm('Are you sure you want to delete this user?');"
                      class="delete-btn bg-white border-2 border-black hover:bg-red-500 hover:text-white text-red-500 px-3 py-1 rounded-lg shadow flex items-center gap-1 transition">
@@ -132,10 +157,5 @@
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer class="mt-12 py-6 text-center text-gray-600">
-    <p class="text-sm font-mono flex items-center justify-center gap-2">    </p>
-  </footer>
 </body>
 </html>

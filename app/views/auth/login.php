@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create User</title>
+  <title>Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -15,19 +15,26 @@
 <body class="bg-gradient-to-br from-gray-100 via-gray-200 to-lavender-100 min-h-screen flex items-center justify-center text-gray-900">
 
   <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-black" style="border-width:3px;">
-
+    
     <!-- Header -->
     <div class="flex flex-col items-center mb-6">
       <div class="bg-black rounded-full p-3 shadow-md border-4 border-black flex items-center justify-center">
-        <i class="fa-solid fa-user-plus text-white text-3xl"></i>
+        <i class="fa-solid fa-user-lock text-white text-3xl mr-2"></i>
+        <span class="text-white text-2xl font-bold">Login</span>
       </div>
-      <h2 class="text-2xl font-bold text-black mt-3">Create User</h2>
-      <p class="text-gray-600 text-sm">Add a new user to the system</p>
+      <p class="text-gray-600 text-sm mt-3">Enter your credentials to access your account</p>
     </div>
 
-    <!-- Form -->
-    <form action="<?=site_url('users/create')?>" method="POST" class="space-y-5">
+    <!-- Error Message -->
+    <?php if (!empty($error)): ?>
+      <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center text-sm border border-red-500">
+        <?= $error ?>
+      </div>
+    <?php endif; ?>
 
+    <!-- Form -->
+    <form action="<?= site_url('auth/login') ?>" method="POST" class="space-y-5">
+      
       <!-- Username -->
       <div>
         <label class="block text-black mb-1 font-medium">
@@ -35,21 +42,7 @@
         </label>
         <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
           <i class="fa-solid fa-user text-[#8B4513] mr-2"></i>
-          <input type="text" name="username" placeholder="Enter username" required
-                 value="<?= isset($username) ? html_escape($username) : '' ?>"
-                 class="w-full px-2 py-3 bg-white text-black focus:outline-none">
-        </div>
-      </div>
-
-      <!-- Email -->
-      <div>
-        <label class="block text-black mb-1 font-medium">
-          <i class="fa-solid fa-envelope mr-1"></i> Email
-        </label>
-        <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
-          <i class="fa-solid fa-envelope text-red-500 mr-2"></i>
-          <input type="email" name="email" placeholder="Enter email" required
-                 value="<?= isset($email) ? html_escape($email) : '' ?>"
+          <input type="text" name="username" placeholder="Enter your username" required
                  class="w-full px-2 py-3 bg-white text-black focus:outline-none">
         </div>
       </div>
@@ -61,31 +54,23 @@
         </label>
         <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
           <i class="fa-solid fa-lock text-red-500 mr-2"></i>
-          <input type="password" name="password" placeholder="Enter password" required
+          <input type="password" name="password" placeholder="Enter your password" required
                  class="w-full px-2 py-3 bg-white text-black focus:outline-none">
         </div>
       </div>
 
-      <!-- Confirm Password -->
-      <div>
-        <label class="block text-black mb-1 font-medium">
-          <i class="fa-solid fa-lock mr-1"></i> Confirm Password
-        </label>
-        <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
-          <i class="fa-solid fa-lock text-red-500 mr-2"></i>
-          <input type="password" name="confirm_password" placeholder="Confirm password" required
-                 class="w-full px-2 py-3 bg-white text-black focus:outline-none">
-        </div>
-      </div>
-
-      <!-- Submit Button -->
+      <!-- Login Button -->
       <button type="submit"
               class="w-full bg-[#C8A2C8] text-black font-semibold py-3 rounded-xl border-2 border-black shadow-lg transition duration-300 hover:bg-[#B0E0E6] hover:text-black">
-        <i class="fa-solid fa-user-plus mr-2"></i> Create User
+        <i class="fa-solid fa-right-to-bracket mr-2"></i> Login
       </button>
 
-    </form>
+      <!-- Register Link -->
+      <p class="text-center text-gray-600 text-sm">
+        Don't have an account? <a href="<?= site_url('auth/register'); ?>" class="text-[#8f2c24] font-medium hover:underline">Register here</a>
+      </p>
 
+    </form>
   </div>
 
 </body>
