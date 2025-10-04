@@ -14,19 +14,33 @@ class UsersModel extends Model {
     }
 
     /** ============================
-     * FIND USER BY ID
+     * FIND USER BY ID (override base Model::find)
      * ============================ */
-    public function find($id)
+    public function find($id, $with_deleted = false)
     {
-        return $this->db->table($this->table)
-                        ->where($this->primary_key, $id)
-                        ->get();
+        $query = $this->db->table($this->table)
+                          ->where($this->primary_key, $id);
+
+        // kung may soft delete column
+        if (!$with_deleted && $this->db->field_exists('deleted_at', $this->table)) {
+            $query->where('deleted_at', null);
+        }
+
+        return $query->get();
     }
 
     /** ============================
-     * FIND USER BY USERNAME
+     * GET USER BY ID
      * ============================ */
-    public function find_by_username($username)
+    public function get_user_by_id($id)
+    {
+        return $this->find($id);
+    }
+
+    /** ============================
+     * GET USER BY USERNAME
+     * ============================ */
+    public function get_user_by_username($username)
     {
         return $this->db->table($this->table)
                         ->where('username', $username)
@@ -34,38 +48,9 @@ class UsersModel extends Model {
     }
 
     /** ============================
-     * INSERT USER
-     * ============================ */
-    public function insert($data)
-    {
-        return $this->db->table($this->table)->insert($data);
-    }
-
-    /** ============================
-     * UPDATE USER
-     * ============================ */
-    public function update($id, $data)
-    {
-        return $this->db->table($this->table)
-                        ->where($this->primary_key, $id)
-                        ->update($data);
-    }
-
-    /** ============================
-     * DELETE USER
-     * ============================ */
-    public function delete($id)
-    {
-        return $this->db->table($this->table)
-                        ->where($this->primary_key, $id)
-                        ->delete();
-    }
-
-    /** ============================
      * UPDATE PASSWORD
      * ============================ */
-    public function update_password($user_id, $new_password) 
-    {
+    public function update_password($user_id, $new_password) {
         return $this->db->table($this->table)
                         ->where($this->primary_key, $user_id)
                         ->update([
@@ -91,7 +76,7 @@ class UsersModel extends Model {
         }
 
         if (isset($_SESSION['user']['id'])) {
-            return $this->find($_SESSION['user']['id']);
+            return $this->get_user_by_id($_SESSION['user']['id']);
         }
 
         return null;
@@ -105,7 +90,7 @@ class UsersModel extends Model {
         // Base query
         $baseQuery = $this->db->table($this->table);
 
-        // Search filter
+        // Apply search filter kung may $q
         if (!empty($q)) {
             $baseQuery->group_start()
                       ->like('id', $q)
@@ -115,11 +100,11 @@ class UsersModel extends Model {
                       ->group_end();
         }
 
-        // Count rows
+        // Clone query for counting rows
         $countQuery = clone $baseQuery;
         $total_rows = $countQuery->select_count('*', 'count')->get()['count'];
 
-        // No pagination → return all
+        // Walang pagination → return lahat ng results
         if (is_null($records_per_page) || is_null($page)) {
             return [
                 'total_rows' => $total_rows,
@@ -127,7 +112,7 @@ class UsersModel extends Model {
             ];
         }
 
-        // Paginated results
+        // Apply pagination
         $records = $baseQuery->pagination($records_per_page, $page)->get_all();
 
         return [
