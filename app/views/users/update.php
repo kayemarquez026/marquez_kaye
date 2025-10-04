@@ -6,78 +6,61 @@
   <title>Update User</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body { font-family: monospace, 'Times New Roman'; }
-  </style>
 </head>
-<body class="bg-gradient-to-br from-gray-100 via-gray-200 to-lavender-100 min-h-screen flex items-center justify-center text-gray-900">
+<body class="bg-gradient-to-br from-gray-100 via-gray-200 to-[#E6E6FA] min-h-screen flex items-center justify-center font-mono text-gray-900">
 
-  <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-black" style="border-width:3px;">
+  <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-[3px] border-black">
+    <h2 class="text-2xl font-bold text-center text-black mb-6 flex items-center justify-center gap-2">
+      <i class="fa-solid fa-pen-to-square"></i> Update User
+    </h2>
 
-    <!-- Header -->
-    <div class="flex flex-col items-center mb-6">
-      <div class="bg-black rounded-full p-3 shadow-md border-4 border-black">
-        <i class="fa-solid fa-pen-to-square text-white text-3xl"></i>
-      </div>
-      <h2 class="text-2xl font-bold text-black mt-3">Update User</h2>
-      <p class="text-gray-600 text-sm">Modify account information</p>
+    <div id="messageBox" class="hidden mb-4 p-3 rounded-lg border-[2px] border-black bg-yellow-100 text-yellow-800 flex items-center gap-2">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span>No changes detected.</span>
     </div>
 
-    <!-- Form -->
-    <form id="updateForm" action="<?=site_url('users/update/'.$user['id'])?>" method="POST" class="space-y-5">
-      
-      <!-- Username -->
+    <form id="updateForm" action="<?=site_url('users/update/'.$user['id'])?>" method="POST" class="space-y-4">
       <div>
-        <label class="block text-black mb-1 font-medium">Username</label>
-        <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
-          <i class="fa-solid fa-user text-[#8B4513] mr-2"></i>
-          <input type="text" name="username" value="<?=html_escape($user['username'])?>" required
-                 class="inputField w-full px-2 py-3 bg-white text-black focus:outline-none">
-        </div>
+        <label class="block text-gray-800 mb-1 flex items-center gap-2">
+          <i class="fa-solid fa-user"></i> Username
+        </label>
+        <input type="text" name="username" value="<?= html_escape($user['username'])?>" required
+               class="inputField w-full px-4 py-3 bg-white text-black border-[2px] border-black rounded-xl focus:ring-2 focus:ring-[#C8A2C8]">
       </div>
 
-      <!-- Email -->
       <div>
-        <label class="block text-black mb-1 font-medium">Email Address</label>
-        <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
-          <i class="fa-solid fa-envelope text-red-500 mr-2"></i>
-          <input type="email" name="email" value="<?=html_escape($user['email'])?>" required
-                 class="inputField w-full px-2 py-3 bg-white text-black focus:outline-none">
-        </div>
+        <label class="block text-gray-800 mb-1 flex items-center gap-2">
+          <i class="fa-solid fa-envelope"></i> Email
+        </label>
+        <input type="email" name="email" value="<?= html_escape($user['email'])?>" required
+               class="inputField w-full px-4 py-3 bg-white text-black border-[2px] border-black rounded-xl focus:ring-2 focus:ring-[#C8A2C8]">
       </div>
 
-      <!-- Password -->
-      <div>
-        <label class="block text-black mb-1 font-medium">Password</label>
-        <div class="flex items-center border-2 border-black rounded-xl bg-white px-3 relative">
-          <i class="fa-solid fa-lock text-indigo-600 mr-2"></i>
-          <input type="password" name="password" id="password" placeholder="New password (leave blank to keep old)"
-                 class="inputField w-full px-2 py-3 bg-white text-black focus:outline-none">
-          <i class="fa-solid fa-eye toggle-eye absolute right-3 cursor-pointer" id="togglePassword"></i>
-        </div>
-      </div>
-
-      <!-- Update Button -->
       <button type="submit"
-              class="w-full bg-[#C8A2C8] text-black font-semibold py-3 rounded-xl border-2 border-black shadow-lg transition duration-300 hover:bg-[#B0E0E6] hover:text-black">
-        <i class="fa-solid fa-pen-to-square mr-2"></i> Update
+        class="w-full bg-[#C8A2C8] hover:bg-black hover:text-white text-black font-semibold py-3 rounded-xl border-[2px] border-black shadow-lg transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-pen-to-square"></i> Update
       </button>
-
-      <!-- Return Button -->
-      <a href="<?=site_url('users')?>"
-         class="block w-full text-center mt-3 bg-white hover:bg-black hover:text-white text-black font-semibold py-3 rounded-xl border-2 border-black shadow-lg transition duration-300">
-        <i class="fa-solid fa-arrow-left mr-2"></i> Return
-      </a>
     </form>
   </div>
 
   <script>
-    const togglePassword = document.getElementById("togglePassword");
-    const password = document.getElementById("password");
-    togglePassword.addEventListener("click", () => {
-      const type = password.type === "password" ? "text" : "password";
-      password.type = type;
-      togglePassword.classList.toggle("fa-eye-slash");
+    const form = document.getElementById("updateForm");
+    const inputs = document.querySelectorAll(".inputField");
+    const messageBox = document.getElementById("messageBox");
+
+    const originalValues = {};
+    inputs.forEach(input => originalValues[input.name] = input.value);
+
+    form.addEventListener("submit", function(e) {
+      let changed = false;
+      inputs.forEach(input => {
+        if (input.value !== originalValues[input.name]) changed = true;
+      });
+      if (!changed) {
+        e.preventDefault();
+        messageBox.classList.remove("hidden");
+        setTimeout(() => messageBox.classList.add("hidden"), 2000);
+      }
     });
   </script>
 </body>
