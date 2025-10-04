@@ -1,60 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Sign Up</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create User</title>
   <style>
-    body {
-      font-family: monospace, 'Times New Roman';
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    section {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    section .bg,
+    section .trees {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    section .trees {
+      z-index: 100;
+    }
+
+    .form-container {
+      position: relative;
+      padding: 50px;
+      width: 400px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(15px);
+      border: 1px solid #fff;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 200;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h1 {
+      text-align: center;
+      font-size: 2.2em;
+      font-weight: 600;
+      color: #8f2c24;
+      margin-bottom: 20px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: none;
+      margin-bottom: 15px;
+      background: #fff;
+      color: #333;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border: 2px solid #667eea;
+      box-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: #8f2c24;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.5s;
+    }
+
+    .btn-submit:hover {
+      background: #d64c42;
+    }
+
+    .link-wrapper {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .btn-link {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #282ca7;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .btn-link:hover {
+      background: #1f2380;
+      transform: translateY(-2px);
+    }
+
+    /* Falling leaves animation */
+    .leaves {
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .leaves .set {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .leaves .set div {
+      position: absolute;
+      display: block;
+    }
+
+    .leaves .set div:nth-child(1) { left: 20%; animation: animate 20s linear infinite; }
+    .leaves .set div:nth-child(2) { left: 50%; animation: animate 14s linear infinite; }
+    .leaves .set div:nth-child(3) { left: 70%; animation: animate 12s linear infinite; }
+    .leaves .set div:nth-child(4) { left: 5%;  animation: animate 15s linear infinite; }
+    .leaves .set div:nth-child(5) { left: 85%; animation: animate 18s linear infinite; }
+    .leaves .set div:nth-child(6) { left: 90%; animation: animate 12s linear infinite; }
+    .leaves .set div:nth-child(7) { left: 15%; animation: animate 14s linear infinite; }
+    .leaves .set div:nth-child(8) { left: 60%; animation: animate 15s linear infinite; }
+
+    @keyframes animate {
+      0%   { opacity: 0; top: -10%; transform: translateX(20px) rotate(0deg); }
+      10%  { opacity: 1; }
+      20%  { transform: translateX(-20px) rotate(45deg); }
+      40%  { transform: translateX(-20px) rotate(90deg); }
+      60%  { transform: translateX(20px) rotate(180deg); }
+      80%  { transform: translateX(-20px) rotate(45deg); }
+      100% { top: 110%; transform: translateX(20px) rotate(225deg); }
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-gray-100 via-gray-200 to-lavender-100 min-h-screen flex items-center justify-center text-gray-900">
-
-  <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-black" style="border-width:3px;">
-    
-    <!-- Header -->
-    <div class="flex flex-col items-center mb-6">
-      <div class="bg-black rounded-full p-3 shadow-md border-4 border-black">
-        <i class="fa-solid fa-user-graduate text-white text-3xl"></i>
+<body>
+  <section>
+    <!-- Falling Leaves -->
+    <div class="leaves">
+      <div class="set">
+        <div><img src="/public/images/leaf_03.png"></div>
+        <div><img src="/public/images/leaf_02.png"></div>
+        <div><img src="/public/images/leaf_03.png"></div>
+        <div><img src="/public/images/leaf_04.png"></div>
+        <div><img src="/public/images/leaf_01.png"></div>
+        <div><img src="/public/images/leaf_02.png"></div>
+        <div><img src="/public/images/leaf_03.png"></div>
+        <div><img src="/public/images/leaf_04.png"></div>
       </div>
-      <h2 class="text-2xl font-bold text-black mt-3">Student Registration</h2>
-      <p class="text-gray-600 text-sm">Register your account today</p>
     </div>
 
-    <!-- Form -->
-    <form action="<?=site_url('users/create')?>" method="POST" class="space-y-5">
-      
-      <!-- First Name -->
-      <div>
-        <label class="block text-black mb-1 font-medium">Username</label>
-        <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
-          <i class="fa-solid fa-user text-[#8B4513] mr-2"></i>
-          <input type="text" name="username" placeholder="Enter your username" required
-                 class="w-full px-2 py-3 bg-white text-black focus:outline-none">
+    <!-- Background -->
+    <img src="/public/images/bg.jpg" class="bg">
+    <img src="/public/images/trees.png" class="trees">
+
+    <!-- Create User Form -->
+    <div class="form-container">
+      <h1>Create User</h1>
+      <form id="user-form" action="<?=site_url('users/create/')?>" method="POST">
+        <div class="form-group">
+          <input type="text" name="username" placeholder="Username" required value="<?= isset($username) ? html_escape($username) : '' ?>">
         </div>
-      </div>
-
-      <!-- Email -->
-      <div>
-        <label class="block text-black mb-1 font-medium">Email Address</label>
-        <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
-          <i class="fa-solid fa-envelope text-red-500 mr-2"></i>
-          <input type="email" name="email" placeholder="john.doe@example.com" required
-                 class="w-full px-2 py-3 bg-white text-black focus:outline-none">
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Email" required value="<?= isset($email) ? html_escape($email) : '' ?>">
         </div>
+        <button type="submit" class="btn-submit">Create User</button>
+      </form>
+      <div class="link-wrapper">
+        <a href="<?=site_url('/users'); ?>" class="btn-link">Return to Home</a>
       </div>
-
-      <!-- Sign Up Button -->
-      <button type="submit"
-              class="w-full bg-[#C8A2C8] text-black font-semibold py-3 rounded-xl border-2 border-black shadow-lg transition duration-300 hover:bg-[#B0E0E6] hover:text-black">
-        <i class="fa-solid fa-user-plus mr-2"></i> Register/Sign up
-      </button>
-
-    </form>
-  </div>
+    </div>
+  </section>
 </body>
 </html>
