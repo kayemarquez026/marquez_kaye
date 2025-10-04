@@ -30,20 +30,10 @@
       
       <!-- First Name -->
       <div>
-        <label class="block text-black mb-1 font-medium">First Name</label>
+        <label class="block text-black mb-1 font-medium">Username</label>
         <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
           <i class="fa-solid fa-user text-[#8B4513] mr-2"></i>
-          <input type="text" name="first_name" placeholder="Enter your first name" required
-                 class="w-full px-2 py-3 bg-white text-black focus:outline-none">
-        </div>
-      </div>
-
-      <!-- Last Name -->
-      <div>
-        <label class="block text-black mb-1 font-medium">Last Name</label>
-        <div class="flex items-center border-2 border-black rounded-xl bg-white px-3">
-          <i class="fa-solid fa-user text-blue-500 mr-2"></i>
-          <input type="text" name="last_name" placeholder="Enter your last name" required
+          <input type="text" name="username" placeholder="Enter your username" required
                  class="w-full px-2 py-3 bg-white text-black focus:outline-none">
         </div>
       </div>

@@ -22,8 +22,7 @@ class UsersModel extends Model {
         // Apply search filters if $q is not empty
         if (!empty($q)) {
             $query->like('id', '%'.$q.'%')
-                  ->or_like('first_name', '%'.$q.'%')
-                  ->or_like('last_name', '%'.$q.'%')
+                  ->or_like('username', '%'.$q.'%')
                   ->or_like('email', '%'.$q.'%');
         }
 

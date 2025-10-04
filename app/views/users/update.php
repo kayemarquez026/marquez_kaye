@@ -25,18 +25,9 @@
       <!-- First Name -->
       <div>
         <label class="block text-gray-800 mb-1 flex items-center gap-2">
-          <i class="fa-solid fa-user text-yellow-800"></i> First Name
+          <i class="fa-solid fa-user text-yellow-800"></i> Username
         </label>
-        <input type="text" name="first_name" value="<?= html_escape($user['first_name'])?>" required
-               class="inputField w-full px-4 py-3 bg-white text-black border-[2px] border-black rounded-xl focus:ring-2 focus:ring-[#C8A2C8] focus:outline-none">
-      </div>
-
-      <!-- Last Name -->
-      <div>
-        <label class="block text-gray-800 mb-1 flex items-center gap-2">
-          <i class="fa-solid fa-user text-blue-600"></i> Last Name
-        </label>
-        <input type="text" name="last_name" value="<?= html_escape($user['last_name'])?>" required
+        <input type="text" name="username" value="<?= html_escape($user['username'])?>" required
                class="inputField w-full px-4 py-3 bg-white text-black border-[2px] border-black rounded-xl focus:ring-2 focus:ring-[#C8A2C8] focus:outline-none">
       </div>
 
