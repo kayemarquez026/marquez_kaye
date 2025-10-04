@@ -99,7 +99,7 @@
             <?php foreach(html_escape($users) as $user): ?>
               <tr class="hover:bg-gray-100 transition duration-200">
                 <td class="py-3 px-4 font-medium"><?=($user['id']);?></td>
-                <td class="py-3 px-4"><?=($user['last_name']);?></td>
+                <td class="py-3 px-4"><?=($user['username']);?></td>
                 <td class="py-3 px-4">
                   <span class="bg-[#C8A2C8]/20 text-[#4B0082] text-sm font-semibold px-3 py-1 rounded-full">
                     <?=($user['email']);?>
