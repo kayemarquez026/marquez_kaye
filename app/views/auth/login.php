@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create User</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+
+  <!-- Font Awesome for eye icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
     * {
       margin: 0;
@@ -20,8 +24,6 @@
       width: 100%;
       height: 100vh;
       overflow: hidden;
-      padding: 20px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
     }
 
     section .bg,
@@ -39,85 +41,92 @@
       z-index: 100;
     }
 
-    .form-container {
+    .login {
       position: relative;
-      padding: 50px;
-      width: 400px;
+      padding: 60px;
       background: rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(15px);
       border: 1px solid #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      border-right: 1px solid rgba(255, 255, 255, 0.5);
       border-radius: 20px;
+      width: 500px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      z-index: 200;
+      gap: 30px;
       box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+      z-index: 200;
     }
 
-    .form-container h1 {
+    .login h2 {
       text-align: center;
-      font-size: 2.2em;
+      font-size: 2.5em;
       font-weight: 600;
       color: #8f2c24;
+    }
+
+    .login .inputBox {
+      position: relative;
       margin-bottom: 20px;
     }
 
-    .form-group input {
+    .login .inputBox input {
       width: 100%;
-      padding: 12px 15px;
-      font-size: 1em;
+      padding: 15px 45px 15px 20px;
+      font-size: 1.25em;
+      color: #8f2c24;
       border-radius: 5px;
-      border: none;
-      margin-bottom: 15px;
       background: #fff;
-      color: #333;
+      border: none;
     }
 
-    .form-group input:focus {
-      outline: none;
-      border: 2px solid #667eea;
-      box-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
+    .login .inputBox ::placeholder {
+      color: #8f2c24;
     }
 
-    .btn-submit {
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.2em;
+      color: #8f2c24;
+    }
+
+    .login button {
       width: 100%;
-      padding: 14px;
+      padding: 15px;
+      border: none;
       background: #8f2c24;
       color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.1em;
+      font-size: 1.25em;
       font-weight: 500;
+      border-radius: 5px;
       cursor: pointer;
-      transition: 0.5s;
-    }
-
-    .btn-submit:hover {
-      background: #d64c42;
-    }
-
-    .link-wrapper {
-      text-align: center;
-      margin-top: 15px;
-    }
-
-    .btn-link {
-      display: inline-block;
-      padding: 12px 20px;
-      background: #282ca7;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: 500;
       transition: 0.3s;
     }
 
-    .btn-link:hover {
-      background: #1f2380;
-      transform: translateY(-2px);
+    .login button:hover {
+      background: #d64c42;
     }
 
-    /* Falling leaves animation */
+    .group {
+      text-align: center;
+    }
+
+    .group a {
+      font-size: 1em;
+      color: #8f2c24;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .group a:hover {
+      text-decoration: underline;
+    }
+
+    /* Leaves animation */
     .leaves {
       position: absolute;
       width: 100%;
@@ -126,7 +135,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 100;
+      z-index: 1;
       pointer-events: none;
     }
 
@@ -153,19 +162,18 @@
     .leaves .set div:nth-child(8) { left: 60%; animation: animate 15s linear infinite; }
 
     @keyframes animate {
-      0%   { opacity: 0; top: -10%; transform: translateX(20px) rotate(0deg); }
-      10%  { opacity: 1; }
-      20%  { transform: translateX(-20px) rotate(45deg); }
-      40%  { transform: translateX(-20px) rotate(90deg); }
-      60%  { transform: translateX(20px) rotate(180deg); }
-      80%  { transform: translateX(-20px) rotate(45deg); }
+      0% { opacity: 0; top: -10%; transform: translateX(20px) rotate(0deg); }
+      10% { opacity: 1; }
+      20% { transform: translateX(-20px) rotate(45deg); }
+      40% { transform: translateX(-20px) rotate(90deg); }
+      60% { transform: translateX(20px) rotate(180deg); }
+      80% { transform: translateX(-20px) rotate(45deg); }
       100% { top: 110%; transform: translateX(20px) rotate(225deg); }
     }
   </style>
 </head>
 <body>
   <section>
-    <!-- Falling Leaves -->
     <div class="leaves">
       <div class="set">
         <div><img src="/public/images/leaf_03.png"></div>
@@ -179,26 +187,51 @@
       </div>
     </div>
 
-    <!-- Background -->
     <img src="/public/images/bg.jpg" class="bg">
     <img src="/public/images/trees.png" class="trees">
 
-    <!-- Create User Form -->
-    <div class="form-container">
-      <h1>Create User</h1>
-      <form id="user-form" action="<?=site_url('users/create/')?>" method="POST">
-        <div class="form-group">
-          <input type="text" name="username" placeholder="Username" required value="<?= isset($username) ? html_escape($username) : '' ?>">
+    <div class="login">
+      <h2>Login</h2>
+
+      <?php if (!empty($error)): ?>
+        <div style="background: rgba(255,0,0,0.1); color: #d64c42; padding: 10px; border: 1px solid #d64c42; border-radius: 5px; margin-bottom: 15px; text-align: center; font-size: 0.95em;">
+          <?= $error ?>
         </div>
-        <div class="form-group">
-          <input type="email" name="email" placeholder="Email" required value="<?= isset($email) ? html_escape($email) : '' ?>">
+      <?php endif; ?>
+
+      <form method="post" action="<?= site_url('auth/login') ?>">
+        <div class="inputBox">
+          <input type="text" placeholder="Username" name="username" required>
         </div>
-        <button type="submit" class="btn-submit">Create User</button>
+
+        <div class="inputBox">
+          <input type="password" placeholder="Password" name="password" id="password" required>
+          <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+        </div>
+
+        <button type="submit" id="btn">Login</button>
       </form>
-      <div class="link-wrapper">
-        <a href="<?=site_url('/users'); ?>" class="btn-link">Return to Home</a>
+
+      <div class="group">
+        <p style="font-size: 0.9em;">
+          Don't have an account? <a href="<?= site_url('auth/register'); ?>">Register here</a>
+        </p>
       </div>
     </div>
   </section>
+
+  <script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function () {
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+
+      // Toggle between fa-eye and fa-eye-slash
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+  </script>
 </body>
 </html>
