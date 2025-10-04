@@ -48,9 +48,46 @@ class UsersModel extends Model {
     }
 
     /** ============================
+     * FIND USER BY USERNAME (alias for backward compatibility)
+     * ============================ */
+    public function find_by_username($username)
+    {
+        return $this->get_user_by_username($username);
+    }
+
+    /** ============================
+     * INSERT USER
+     * ============================ */
+    public function insert($data)
+    {
+        return $this->db->table($this->table)->insert($data);
+    }
+
+    /** ============================
+     * UPDATE USER
+     * ============================ */
+    public function update($id, $data)
+    {
+        return $this->db->table($this->table)
+                        ->where($this->primary_key, $id)
+                        ->update($data);
+    }
+
+    /** ============================
+     * DELETE USER
+     * ============================ */
+    public function delete($id)
+    {
+        return $this->db->table($this->table)
+                        ->where($this->primary_key, $id)
+                        ->delete();
+    }
+
+    /** ============================
      * UPDATE PASSWORD
      * ============================ */
-    public function update_password($user_id, $new_password) {
+    public function update_password($user_id, $new_password) 
+    {
         return $this->db->table($this->table)
                         ->where($this->primary_key, $user_id)
                         ->update([
