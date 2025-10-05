@@ -14,9 +14,9 @@
 </head>
 <body class="bg-gradient-to-br from-gray-100 via-gray-200 to-lavender-100 min-h-screen flex items-start justify-center text-gray-900 pt-2"> <!-- Tiny top padding -->
 
-  <div class="bg-white p-7 rounded-2xl shadow-2xl w-full max-w-lg border-black mb-[10px]" style="border-width:3px;">
+  <div class="bg-white p-5 rounded-2xl shadow-2xl w-full max-w-lg border-black mb-[10px]" style="border-width:3px;">
     <!-- Header -->
-    <div class="flex flex-col items-center mb-6">
+    <div class="flex flex-col items-center mb-12">
       <div class="bg-black rounded-full p-3 shadow-md border-4 border-black">
         <i class="fa-solid fa-user text-white text-3xl"></i>
       </div>

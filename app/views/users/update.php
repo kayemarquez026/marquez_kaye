@@ -61,8 +61,8 @@
       <div class="flex items-center border-2 border-black rounded-xl bg-white px-2 py-1.5">
         <i class="fa-solid fa-user-shield text-gray-700 mr-2 text-sm"></i>
         <select name="role" required class="w-full bg-white text-black focus:outline-none text-sm">
-          <option value="user" <?= $user['role']==='user'?'selected':'' ?>>User</option>
-          <option value="admin" <?= $user['role']==='admin'?'selected':'' ?>>Admin</option>
+          <option value="user" <?= $user['role']==='user'?'selected':'' ?>>user</option>
+          <option value="admin" <?= $user['role']==='admin'?'selected':'' ?>>admin</option>
         </select>
       </div>
     </div>
