@@ -27,7 +27,7 @@ html, body {
     <div class="bg-black rounded-full p-3 shadow-md border-4 border-black">
       <i class="fa-solid fa-user text-white text-3xl"></i>
     </div>
-    <h2 class="text-2xl font-bold text-black mt-0">Create User</h2>
+    <h2 class="text-2xl font-bold text-black mt-2">Create User</h2>
     <p class="text-gray-600 text-sm mb-3">Register a new account</p>
   </div>
 
