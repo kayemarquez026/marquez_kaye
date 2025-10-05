@@ -1,234 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create User</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        section {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-        }
+<style>
+/* Hide scrollbar completely */
+body::-webkit-scrollbar { display: none; }
+body { -ms-overflow-style: none; scrollbar-width: none; }
 
-        section .bg,
-        section .trees {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            pointer-events: none;
-        }
-
-        section .trees {
-            z-index: 100;
-        }
-
-        .login {
-            position: relative;
-            padding: 60px;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(15px);
-            border: 1px solid #fff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-            border-right: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            width: 500px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
-            z-index:200;
-        }
-
-        .login h2 {
-            text-align: center;
-            font-size: 2.5em;
-            font-weight: 600;
-            color: #8f2c24;
-            margin-bottom: 10px;
-        }
-
-        .login .inputBox input,
-        .login .inputBox select {
-            width: 100%;
-            padding: 15px 20px;
-            outline: none;
-            font-size: 1.1em;
-            color: #8f2c24;
-            border-radius: 5px;
-            background: #fff;
-            border: none;
-            margin-bottom: 20px;
-        }
-
-        .login .inputBox ::placeholder {
-            color: #8f2c24;
-        }
-
-        .login .inputBox #btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            outline: none;
-            background: #8f2c24;
-            color: #fff;
-            cursor: pointer;
-            font-size: 1.25em;
-            font-weight: 500;
-            border-radius: 5px;
-            transition: 0.5s;
-        }
-
-        .login .inputBox #btn:hover {
-            background: #d64c42;
-        }
-
-        .group {
-        text-align: center;
-        }
-
-        .group a {
-        font-size: 1em;
-        color: #8f2c24;
-        font-weight: 500;
-        text-decoration: none;
-        }
-
-        .group a:hover {
-        text-decoration: underline;
-        }
-
-        .leaves {
-            position: absolute;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            pointer-events: none;
-        }
-
-        .leaves .set {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-
-        .leaves .set div {
-            position: absolute;
-            display: block;
-        }
-
-        .leaves .set div:nth-child(1) { left: 20%; animation: animate 20s linear infinite; }
-        .leaves .set div:nth-child(2) { left: 50%; animation: animate 14s linear infinite; }
-        .leaves .set div:nth-child(3) { left: 70%; animation: animate 12s linear infinite; }
-        .leaves .set div:nth-child(4) { left: 5%;  animation: animate 15s linear infinite; }
-        .leaves .set div:nth-child(5) { left: 85%; animation: animate 18s linear infinite; }
-        .leaves .set div:nth-child(6) { left: 90%; animation: animate 12s linear infinite; }
-        .leaves .set div:nth-child(7) { left: 15%; animation: animate 14s linear infinite; }
-        .leaves .set div:nth-child(8) { left: 60%; animation: animate 15s linear infinite; }
-
-        @keyframes animate {
-            0%   { opacity: 0; top: -10%; transform: translateX(20px) rotate(0deg); }
-            10%  { opacity: 1; }
-            20%  { transform: translateX(-20px) rotate(45deg); }
-            40%  { transform: translateX(-20px) rotate(90deg); }
-            60%  { transform: translateX(20px) rotate(180deg); }
-            80%  { transform: translateX(-20px) rotate(45deg); }
-            100% { top: 110%; transform: translateX(20px) rotate(225deg); }
-        }
-    </style>
+html, body {
+  height: 100%;
+  margin: 0;
+}
+</style>
 </head>
-<body>
-    <section>
-        <!-- Falling Leaves -->
-        <div class="leaves">
-            <div class="set">
-                <div><img src="/public/images/leaf_03.png"></div>
-                <div><img src="/public/images/leaf_02.png"></div>
-                <div><img src="/public/images/leaf_03.png"></div>
-                <div><img src="/public/images/leaf_04.png"></div>
-                <div><img src="/public/images/leaf_01.png"></div>
-                <div><img src="/public/images/leaf_02.png"></div>
-                <div><img src="/public/images/leaf_03.png"></div>
-                <div><img src="/public/images/leaf_04.png"></div>
-            </div>
-        </div>
+<body class="bg-gradient-to-br from-gray-100 via-gray-200 to-lavender-100 flex items-center justify-center">
 
-        <!-- Background -->
-        <img src="/public/images/bg.jpg" class="bg">
-        <img src="/public/images/trees.png" class="trees">
+<div class="bg-white p-3 rounded-2xl shadow-2xl w-10/12 max-w-xl border-2 border-black transform -translate-y-0.5">
 
-        <!-- Register Form -->
-        <div class="login">
-            <h2>Register</h2>
-            <form method="POST" action="<?= site_url('auth/register'); ?>" class="inputBox">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="email" name="email" placeholder="Email" required>
+  <!-- Header -->
+  <div class="flex flex-col items-center mb-5">
+    <div class="bg-black rounded-full p-3 shadow-md border-4 border-black">
+      <i class="fa-solid fa-user text-white text-3xl"></i>
+    </div>
+    <h2 class="text-2xl font-bold text-black mt-0">Create User</h2>
+    <p class="text-gray-600 text-sm mb-3">Register a new account</p>
+  </div>
 
-                <!-- Password field -->
-                <div style="position: relative;">
-                    <input type="password" id="password" name="password" placeholder="Password" required 
-                        style="width: 100%; padding: 15px 45px 15px 20px; border-radius: 5px; border: none; font-size: 1.1em;">
-                    <i class="fa-solid fa-eye" id="togglePassword" 
-                    style="position: absolute; right: 15px; top: 35%; transform: translateY(-50%); cursor: pointer; color: #8f2c24;"></i>
-                </div>
+  <!-- Error message -->
+  <?php if (!empty($error)): ?>
+    <div class="bg-pink-100 text-pink-800 border border-pink-300 p-2 rounded mb-3 text-center text-sm">
+      <?= $error ?>
+    </div>
+  <?php endif; ?>
 
-                <!-- Confirm Password field -->
-                <div style="position: relative;">
-                    <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirm Password" required 
-                        style="width: 100%; padding: 15px 45px 15px 20px; border-radius: 5px; border: none; font-size: 1.1em;">
-                    <i class="fa-solid fa-eye" id="toggleConfirmPassword" 
-                    style="position: absolute; right: 15px; top: 35%; transform: translateY(-50%); cursor: pointer; color: #8f2c24;"></i>
-                </div>
+  <!-- Form -->
+  <form method="POST" action="<?= site_url('users/create'); ?>">
 
-                <!--<select name="role" required>
-                    <option value="user" selected>User</option>
-                    <option value="admin">Admin</option>
-                </select>-->
+    <div class="w-11/12 mx-auto mb-3">
+      <label class="block text-black mb-1 font-medium text-sm">Username</label>
+      <div class="flex items-center border-2 border-black rounded-xl px-3 py-1.5 w-full">
+        <i class="fa-solid fa-user text-gray-700 mr-2 text-sm"></i>
+        <input type="text" name="username" placeholder="Enter username" required
+               value="<?= isset($username) ? html_escape($username) : '' ?>"
+               class="w-full bg-white text-black focus:outline-none text-sm">
+      </div>
+    </div>
 
-                <button type="submit" id="btn">Register</button>
-            </form>
-            <div class="group">
-                <p>Already have an account? <a href="<?= site_url('auth/login'); ?>">Login here</a></p>
-            </div>
-        </div>
-    </section>
-        <script>
-            function toggleVisibility(toggleId, inputId) {
-                const toggle = document.getElementById(toggleId);
-                const input = document.getElementById(inputId);
+    <div class="w-11/12 mx-auto mb-3">
+      <label class="block text-black mb-1 font-medium text-sm">Email Address</label>
+      <div class="flex items-center border-2 border-black rounded-xl px-3 py-1.5 w-full">
+        <i class="fa-solid fa-envelope text-gray-700 mr-2 text-sm"></i>
+        <input type="email" name="email" placeholder="Enter email" required
+               value="<?= isset($email) ? html_escape($email) : '' ?>"
+               class="w-full bg-white text-black focus:outline-none text-sm">
+      </div>
+    </div>
 
-                toggle.addEventListener('click', function () {
-                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                    input.setAttribute('type', type);
+    <div class="w-11/12 mx-auto mb-3">
+      <label class="block text-black mb-1 font-medium text-sm">Password</label>
+      <div class="flex items-center border-2 border-black rounded-xl px-3 py-1.5 w-full">
+        <i class="fa-solid fa-lock text-gray-700 mr-2 text-sm"></i>
+        <input type="password" name="password" placeholder="Enter password" required
+               class="w-full bg-white text-black focus:outline-none text-sm">
+      </div>
+    </div>
 
-                    this.classList.toggle('fa-eye');
-                    this.classList.toggle('fa-eye-slash');
-                });
-            }
+    <div class="w-11/12 mx-auto mb-3">
+      <label class="block text-black mb-1 font-medium text-sm">Confirm Password</label>
+      <div class="flex items-center border-2 border-black rounded-xl px-3 py-1.5 w-full">
+        <i class="fa-solid fa-key text-gray-700 mr-2 text-sm"></i>
+        <input type="password" name="confirm_password" placeholder="Confirm password" required
+               class="w-full bg-white text-black focus:outline-none text-sm">
+      </div>
+    </div>
 
-            toggleVisibility('togglePassword', 'password');
-            toggleVisibility('toggleConfirmPassword', 'confirmPassword');
-        </script>
+    <div class="w-11/12 mx-auto mb-3">
+      <label class="block text-black mb-1 font-medium text-sm">Role</label>
+      <div class="flex items-center border-2 border-black rounded-xl px-3 py-1.5 w-full">
+        <i class="fa-solid fa-user-shield text-gray-700 mr-2 text-sm"></i>
+        <select name="role" required class="w-full bg-white text-black focus:outline-none text-sm">
+          <option value="">-- Select Role --</option>
+          <option value="admin" <?= isset($role) && $role=="admin" ? 'selected' : '' ?>>Admin</option>
+          <option value="user" <?= isset($role) && $role=="user" ? 'selected' : '' ?>>User</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Button with extra top margin -->
+    <div class="w-11/12 mx-auto mt-8">
+      <button type="submit"
+              class="w-full bg-[#C8A2C8] text-black font-semibold py-2 rounded-xl border-2 border-black shadow-lg hover:bg-[#B0E0E6] transition flex justify-center items-center gap-2">
+        <i class="fa-solid fa-user-plus"></i> Register / Create User
+      </button>
+    </div>
+
+  </form>
+
+  <!-- Text right below the button with 15px space at the bottom -->
+    <div class="text-center mt-3 text-sm mb-[15px]">
+        Already have an account? 
+        <a href="<?= site_url('auth/login'); ?>" class="text-[#f44336] font-semibold hover:underline">Login here</a>
+    </div>
+
+
+</div>
 </body>
 </html>

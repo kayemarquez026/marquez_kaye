@@ -79,9 +79,9 @@ $config['ENVIRONMENT']             = 'development';
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] 				= 'https://marquez-kaye.onrender.com/';
+$config['base_url'] 				= '';
 
-/*
+/*https://marquez-kaye.onrender.com/'
 |--------------------------------------------------------------------------
 | Index File
 |--------------------------------------------------------------------------

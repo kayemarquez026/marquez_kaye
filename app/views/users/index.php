@@ -1,141 +1,307 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Directory</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="<?=base_url();?>public/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body {
-      font-family: monospace, 'Times New Roman';
-      background: linear-gradient(to bottom right, #f8f6fb, #e6e6fa);
-      min-height: 100vh;
-    }
-    .delete-btn:hover i {
-      color: white !important;
-    }
-    /* Pagination */
-    .pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      margin-top: 1.5rem;
-    }
-    .pagination a, .pagination span {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      background: #fff;
-      color: #4B0082;
-      border: 2px solid black;
-    }
-    .pagination a:hover {
-      background: #C8A2C8;
-      color: white;
-    }
-    .pagination .current {
-      background: #4B0082;
-      color: white;
-    }
-    .pagination .disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Directory</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body::-webkit-scrollbar { display: none; }
+body { -ms-overflow-style: none; scrollbar-width: none; }
+
+body {
+  font-family: monospace, 'Times New Roman';
+  background: linear-gradient(to bottom right, #f8f6fb, #e6e6fa);
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 50px;
+}
+
+.glass-container {
+  width: 95%;
+  max-width: 1200px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  border: 2px solid #000;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  overflow-x: hidden;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #000;
+}
+
+.user-status {
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #000;
+}
+
+.top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  background: #fff;
+  color: #000;
+  border-radius: 6px;
+  font-weight: 600;
+  border: 2px solid #000;
+  transition: 0.3s;
+}
+.logout-btn:hover { background: #f44336; color: white; }
+
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  max-width: 300px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 4px 8px;
+  background: #fff;
+}
+
+.search-form i { color: #000; font-size: 13px; }
+
+.search-form input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 13px;
+  background: transparent;
+  font-weight: 500;
+  padding-left: 6px;
+}
+
+#clearSearch {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  font-size: 15px;
+}
+#clearSearch:hover { color: #c62828; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border: 2px solid #000;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+th, td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #ccc;
+  word-wrap: break-word;
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  background: #C8A2C8;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+tr:hover td { background: #F4F4FF; }
+
+.email-badge {
+  background: #C8A2C8/20;
+  color: #4B0082;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+a.update-btn, .btn-create {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+  transition: 0.3s;
+}
+a.update-btn:hover, .btn-create:hover { background: #C8A2C8; color: black; }
+
+a.delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+  white-space: nowrap;
+  background: #fff;
+  color: #f44336;
+  border: 2px solid #000;
+  transition: 0.3s;
+}
+a.delete-btn:hover { background: #f44336; color: white; }
+
+.btn-create { padding: 10px 18px; font-size: 14px; border-radius: 10px; }
+
+/* ==== Pagination ==== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.pagination li a, .pagination li span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 35px;  
+  height: 35px;     
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;  
+  text-align: center;
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+  transition: 0.3s;
+}
+
+.pagination li a:hover, .pagination li span:hover { background: #C8A2C8; color: black; }
+.pagination li.active span { background: #4B0082; color: white; border-color: #000; }
+</style>
 </head>
 <body>
+<div class="glass-container">
+  <h2><i class="fa-solid fa-users"></i> <?= ($logged_in_user['role'] === 'admin') ? 'Admin Dashboard' : 'User Dashboard'; ?></h2>
 
-  <!-- Navbar -->
-  <nav class="bg-white shadow-md border-b-2 border-black">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <h1 class="text-xl font-bold text-black flex items-center gap-2 font-mono">
-        <i class="fa-solid fa-users text-black text-lg"></i> User Directory
-      </h1>
-      <div class="text-sm font-semibold text-gray-700">
-      </div>
+  <?php if(!empty($logged_in_user)): ?>
+    <div class="user-status">
+      <i class="fa-solid fa-circle-user"></i> Welcome: <span class="font-bold"><?= html_escape($logged_in_user['username']); ?></span>
     </div>
-  </nav>
+  <?php else: ?>
+    <div class="user-status text-red-600 font-bold">Logged in user not found</div>
+  <?php endif; ?>
 
-  <!-- Main Content -->
-  <div class="max-w-6xl mx-auto mt-10 px-4">
-    <div class="bg-white p-8 rounded-2xl shadow-2xl border-2 border-black">
-
-      <!-- Search & Add -->
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <!-- Search -->
-        <form method="get" action="<?=site_url()?>" class="flex items-center gap-2 border-2 border-black rounded-xl px-3 py-2 bg-white shadow w-full md:w-1/2">
-          <i class="fa-solid fa-search text-gray-500"></i>
-          <input type="text" name="q" value="<?=html_escape($_GET['q'] ?? '')?>" placeholder="Search users..." class="outline-none w-full font-mono">
-        </form>
-
-        <!-- Add New -->
-        <a href="<?=site_url('users/create')?>"
-           class="inline-flex items-center gap-2 bg-white hover:bg-[#C8A2C8] text-black font-semibold px-5 py-2 rounded-xl shadow transition duration-300 border-2 border-black">
-          <i class="fa-solid fa-user-plus text-black text-lg"></i> Add New User
-        </a>
-      </div>
-
-      <!-- Table -->
-      <div class="overflow-x-auto rounded-xl border-2 border-black shadow">
-        <table class="w-full text-center border-collapse">
-          <thead>
-            <tr class="bg-[#C8A2C8] text-white text-sm uppercase">
-              <th class="py-3 px-4"><i class="fa-solid fa-hashtag"></i> ID</th>
-              <th class="py-3 px-4"><i class="fa-solid fa-user"></i> Username</th>
-              <th class="py-3 px-4"><i class="fa-solid fa-envelope"></i> Email</th>
-              <th class="py-3 px-4"><i class="fa-solid fa-gear"></i> Actions</th>
-            </tr>
-          </thead>
-          <tbody class="text-gray-900 text-sm">
-            <?php foreach(html_escape($users) as $user): ?>
-              <tr class="hover:bg-gray-100 transition duration-200">
-                <td class="py-3 px-4 font-medium"><?=($user['id']);?></td>
-                <td class="py-3 px-4"><?=($user['username']);?></td>
-                <td class="py-3 px-4">
-                  <span class="bg-[#C8A2C8]/20 text-[#4B0082] text-sm font-semibold px-3 py-1 rounded-full">
-                    <?=($user['email']);?>
-                  </span>
-                </td>
-                <td class="py-3 px-4 flex justify-center gap-3">
-                  <!-- Update -->
-                  <a href="<?=site_url('users/update/'.$user['id']);?>"
-                     class="bg-white border-2 border-black hover:bg-[#C8A2C8] hover:text-white text-black font-semibold px-3 py-1 rounded-lg shadow flex items-center gap-1 transition">
-                    <i class="fa-solid fa-pen-to-square"></i> Edit
-                  </a>
-                  <!-- Delete -->
-                  <a href="<?=site_url('users/delete/'.$user['id']);?>"
-                     onclick="return confirm('Are you sure you want to delete this user?');"
-                     class="delete-btn bg-white border-2 border-black hover:bg-red-500 hover:text-white text-red-500 px-3 py-1 rounded-lg shadow flex items-center gap-1 transition">
-                    <i class="fa-solid fa-trash"></i> Delete
-                  </a>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Pagination -->
-      <div class="mt-6">
-        <div class="pagination">
-          <?=$page ?? ''?>
-        </div>
-      </div>
-    </div>
+  <div class="top-bar">
+    <a href="<?=site_url('auth/logout'); ?>" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    <form action="<?=site_url('users');?>" method="get" class="search-form">
+      <?php $q = isset($_GET['q']) ? $_GET['q'] : ''; ?>
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="searchInput" name="q" type="text" placeholder="Search users..." value="<?=html_escape($q);?>">
+      <button type="button" id="clearSearch" style="display:none;">&times;</button>
+    </form>
   </div>
 
-  <!-- Footer -->
-  <footer class="mt-12 py-6 text-center text-gray-600">
-    <p class="text-sm font-mono flex items-center justify-center gap-2">    </p>
-  </footer>
+  <div class="rounded-xl border-2 border-black mb-4">
+    <table>
+      <thead>
+        <tr>
+          <th><i class="fa-solid fa-hashtag"></i> ID</th>
+          <th><i class="fa-solid fa-user"></i> Username</th>
+          <th><i class="fa-solid fa-envelope"></i> Email</th>
+          <?php if ($logged_in_user['role'] === 'admin'): ?>
+            <th><i class="fa-solid fa-lock"></i> Password</th>
+            <th><i class="fa-solid fa-user-shield"></i> Role</th>
+          <?php endif; ?>
+          <th><i class="fa-solid fa-gear"></i> Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($users as $user): ?>
+        <tr>
+          <td><?=html_escape($user['id']); ?></td>
+          <td><?=html_escape($user['username']); ?></td>
+          <td><span class="email-badge"><?=html_escape($user['email']);?></span></td>
+
+          <?php if ($logged_in_user['role'] === 'admin'): ?>
+            <td>*******</td>
+            <td><?= html_escape($user['role']); ?></td>
+          <?php endif; ?>
+
+          <td>
+            <?php if ($logged_in_user['role'] === 'admin'): ?>
+              <div class="flex justify-center gap-2">
+                <a href="<?=site_url('/users/update/'.$user['id']);?>" class="update-btn"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                <a href="<?=site_url('/users/delete/'.$user['id']);?>" class="delete-btn"><i class="fa-solid fa-trash"></i> Delete</a>
+              </div>
+            <?php else: ?>
+              <div class="flex justify-center text-gray-500 font-semibold">
+                View Only
+              </div>
+            <?php endif; ?>
+          </td>
+        </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="pagination">
+    <?= $page; ?>
+  </ul>
+
+  <?php if ($logged_in_user['role'] === 'admin'): ?>
+    <div class="text-center mt-3">
+      <a href="<?=site_url('users/create'); ?>" class="btn-create"><i class="fa-solid fa-user-plus"></i> Create New User</a>
+    </div>
+  <?php endif; ?>
+</div>
+
+<script>
+const clearBtn = document.getElementById('clearSearch');
+const searchInput = document.getElementById('searchInput');
+function toggleClearButton() {
+  clearBtn.style.display = searchInput.value.trim() ? 'inline' : 'none';
+}
+toggleClearButton();
+searchInput.addEventListener('input', toggleClearButton);
+clearBtn.addEventListener('click', function() {
+  searchInput.value = '';
+  toggleClearButton();
+  window.location.href = '<?=site_url('users');?>';
+});
+</script>
 </body>
 </html>
