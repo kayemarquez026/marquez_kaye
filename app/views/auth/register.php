@@ -20,14 +20,14 @@ html, body {
 </head>
 <body class="bg-gradient-to-br from-gray-100 via-gray-200 to-lavender-100 flex items-center justify-center">
 
-<div class="bg-white p-3 rounded-2xl shadow-2xl w-10/12 max-w-xl border-2 border-black transform -translate-y-0.5">
+<div class="bg-white p-5 rounded-2xl shadow-2xl w-10/12 max-w-xl border-2 border-black transform -translate-y-0.5">
 
   <!-- Header -->
   <div class="flex flex-col items-center mb-5">
     <div class="bg-black rounded-full p-3 shadow-md border-4 border-black">
       <i class="fa-solid fa-user text-white text-3xl"></i>
     </div>
-    <h2 class="text-2xl font-bold text-black mt-2">Create User</h2>
+    <h2 class="text-2xl font-bold text-black mt-3">Create User</h2>
     <p class="text-gray-600 text-sm mb-3">Register a new account</p>
   </div>
 
