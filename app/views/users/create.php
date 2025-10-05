@@ -89,17 +89,11 @@
         </div>
       </div>
 
-      <!-- Submit Button -->
+      <!-- Submit -->
       <button type="submit"
-              class="w-full bg-[#C8A2C8] text-black font-semibold py-2 rounded-xl border-2 border-black shadow-lg transition duration-300 hover:bg-[#B0E0E6] hover:text-black mt-4 flex justify-center items-center gap-2">
+              class="w-full bg-[#C8A2C8] text-black font-semibold py-2 rounded-xl border-2 border-black shadow-lg transition duration-300 hover:bg-[#B0E0E6] hover:text-black mt-2">
         <i class="fa-solid fa-user-plus mr-2"></i> Register / Create User
       </button>
-
-      <!-- Login link -->
-      <div class="text-center mt-4 text-sm">
-        Already have an account? 
-        <a href="<?= site_url('auth/login'); ?>" class="text-[#f44336] font-semibold hover:underline">Login here</a>
-      </div>
 
     </form>
 
